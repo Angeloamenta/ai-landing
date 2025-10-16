@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react"
 import cases from '../lib/Cases'
+import SplineHero from "./utilities-component/SplineHero"
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
+
+
 
 export default function Cases() {
   const [casesStudy, setCases] = useState(null)
@@ -34,16 +39,26 @@ export default function Cases() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 min-h-screen">
+    <div className="cases container mx-auto relative px-4 py-30 min-h-screen">
+        <div  className="w-full h-full container absolute m-auto " style={{ zIndex: -1 }}> 
+                {/* <SplineHero /> */}
+                <DotLottieReact
+                className="absolute -top-50"
+                    src="https://lottie.host/2046c2d4-6124-48c4-b804-75da79055681/YXnBI3VYVz.lottie"
+                    loop
+                    autoplay
+                />
+                
+            </div>
       <div className="">
         {casesStudy.map((singleCase, index) => (
           <div
             key={index}
-            className="relative border-b border-gray-200  cursor-pointer transition-colors hover:bg-gray-50"
+            className="relative border-b border-gray-200 mt-10  cursor-pointer transition-colors"
             onMouseMove={(e) => handleMouseMove(e, index)}
             onMouseLeave={handleMouseLeave}
           >
-            <h2 className="text-5xl  text-gray-800 hover:text-gray-900 transition-colors">
+            <h2 className="text-5xl uppercase text-gray-800 hover:text-gray-900 transition-colors">
               {singleCase.title}
             </h2>
 
