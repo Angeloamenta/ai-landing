@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -89,13 +90,19 @@ export default function About() {
       </section>
 
       {/* 2nd section */}
-      <section className="m-auto container mt-50">
+      <section className="m-auto container mt-50 relative">
         <div>
           <h2 className="text-5xl text-center">
             ESSENTIAL IS THE FIRST STEP
             <br />
             TOWARDS AN AI OPERATING SYSTEM
           </h2>
+          <DotLottieReact
+          className="w-80 absolute -top-30 right-0"
+            src="https://lottie.host/ce08c3cd-f456-43e1-9dee-7362dc351c82/IzOw2oYgxU.lottie"
+            loop
+            autoplay
+          />
         </div>
       </section>
     </div>

@@ -4,25 +4,26 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Cases from "./Cases";
+
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function Main() {
     const myVideo = useRef(null);
-
     const heroTextRef = useRef(null);
     const section2Ref = useRef(null);
     const section3Ref = useRef(null);
     const section4Ref = useRef(null);
     const section5Ref = useRef(null);
-    const videoContainerRef = useRef(null);
     const iconsRef = useRef([]);
     const featureCardsRef = useRef([]);
-    const statsRef = useRef([]);
+
+    const blackBall = useRef(null);
 
     useEffect(() => {
-
+        // Video animation
         gsap.from(myVideo.current, {
             scale: 0.5,
             duration: 1,
@@ -51,7 +52,7 @@ export default function Main() {
                     ease: "power3.out",
                     scrollTrigger: {
                         trigger: heroTextRef.current,
-                        start: "top 90%",
+                        start: "top 95%",
                         toggleActions: "play none none reverse",
                     }
                 });
@@ -82,31 +83,6 @@ export default function Main() {
                 }
             });
 
-            // Video container parallax
-            if (videoContainerRef.current) {
-                gsap.from(videoContainerRef.current, {
-                    scale: 0.9,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: videoContainerRef.current,
-                        start: "top 90%",
-                        toggleActions: "play none none reverse",
-                    }
-                });
-
-                gsap.to(videoContainerRef.current, {
-                    y: -100,
-                    scrollTrigger: {
-                        trigger: section3Ref.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1,
-                    }
-                });
-            }
-
             // Feature cards stagger
             featureCardsRef.current.forEach((card, index) => {
                 if (card) {
@@ -125,49 +101,35 @@ export default function Main() {
                 }
             });
 
-            // Stats counter animation
-            statsRef.current.forEach((stat) => {
-                if (stat) {
-                    const number = stat.querySelector('.stat-number');
-                    if (number) {
-                        const endValue = number.textContent;
-                        const obj = { value: 0 };
-
-                        ScrollTrigger.create({
-                            trigger: stat,
-                            start: "top 80%",
-                            onEnter: () => {
-                                gsap.to(obj, {
-                                    value: parseFloat(endValue),
-                                    duration: 2,
-                                    ease: "power2.out",
-                                    onUpdate: () => {
-                                        const suffix = endValue.includes('x') ? 'x' :
-                                            endValue.includes('%') ? '%' :
-                                                endValue.includes('k') ? 'k' : '';
-                                        const cleanValue = parseFloat(endValue.replace(/[^0-9.]/g, ''));
-                                        number.textContent = Math.round(obj.value * 10) / 10 + suffix;
-                                    }
-                                });
-                            }
-                        });
-                    }
-
-                    gsap.from(stat, {
-                        opacity: 0,
-                        y: 40,
-                        duration: 0.7,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: stat,
-                            start: "top 95%",
-                            toggleActions: "play none none reverse",
-                        }
-                    });
-                }
-            });
 
         }, []);
+
+
+       const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".change",
+        start: "top bottom",     // quando la sezione entra nel viewport
+        end: "bottom top",       // fino a quando esce
+        pin: true,               // fissa la sezione durante l’effetto
+        scrub: true,             // sincronizza con lo scroll
+        markers: true,           // (facoltativo, utile per debug)
+      },
+    });
+
+    // 1️⃣ Ingrandisce l'elemento
+    tl.to(blackBall.current, {
+      scale: 50,
+      duration: 1,
+      ease: "power2.inOut",
+    })
+    // 2️⃣ Sfuma via mentre la scala termina
+      .to(blackBall.current, {
+        opacity: 0,
+        duration: 0.6,
+        ease: "power1.out",
+      }, "-=0.3"); // inizia 0.3 secondi prima della fine della scala
+
+
 
         return () => ctx.revert();
     }, []);
@@ -241,62 +203,44 @@ export default function Main() {
                 </div>
             </section>
 
-            {/* ===== SECTION 3: Large Media Section ===== */}
-            <section ref={section3Ref} className="min-h-screen py-32 px-8 flex items-center">
-                <div className=" w-full mx-auto">
-                    <div ref={videoContainerRef} className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02]">
-                        {/* Placeholder for video/image */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="video-container w-full flex justify-center">
-                                <iframe
-                                    ref={myVideo}
-                                    width="80%"
-                                    height="600"
-                                    src="https://www.youtube.com/embed/DZLlw5BNQ3g?si=6EK52qWxMfu4NCHT&amp;controls=0"
-                                    title="YouTube video player"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    referrerPolicy="strict-origin-when-cross-origin"
-                                    allowFullScreen
-                                    className="rounded-2xl"
-                                ></iframe>
-                            </div>
-
-                            {/* <div className="w-24 h-24 mx-auto border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                                    <svg className="w-10 h-10 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <p className="text-sm text-gray-600 uppercase tracking-[0.3em]">Watch Demo</p> */}                        </div>
-
-                        {/* Animated grid overlay */}
-                        <div className="absolute inset-0 opacity-20">
-                            <div className="absolute inset-0" style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Cpath d='M0 0h1v60H0zM0 0h60v1H0z' fill='%23fff' fill-opacity='0.1'/%3E%3C/svg%3E")`,
-                                backgroundSize: '60px 60px'
-                            }}></div>
-                        </div>
-                    </div>
-                    <div className="container m-auto  flex justify-center">
-                        <div className="card h-64 w-[30%] bg-white backdrop-blur-lg border border-white/20 rounded-2xl p-6 ">
-                            <h3 className="text-lg text-center mb-5 font-bold">About Us</h3>
-                            <p className="text-sm  text-center">
-                                We are a team of passionate individuals committed to making a
-                                difference in the world through innovative technology.
-                            </p>
-                        </div>
+            {/* ===== SECTION 3: video ===== */}
+            <section ref={section3Ref} className="py-32 px-8 flex items-center">
+                <div className="max-w-7xl relative w-full mx-auto">
+                    <div className="video-container flex justify-center">
+                        <iframe
+                            ref={myVideo}
+                            width="80%"
+                            height="600"
+                            src="https://www.youtube.com/embed/DZLlw5BNQ3g?si=6EK52qWxMfu4NCHT&amp;controls=0"
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                            className="rounded-2xl"
+                        ></iframe>
                     </div>
 
-                    <div className="mt-16 max-w-3xl">
-                        <p className="text-xl md:text-2xl text-gray-500 leading-relaxed">
+                    <div className="mt-16">
+                        <p className="text-xl max-w-3xl md:text-2xl text-gray-500 leading-relaxed">
                             Seamlessly blend natural language with powerful AI capabilities to create experiences that were previously impossible.
                         </p>
+                        <DotLottieReact
+                            className=" absolute -bottom-50 right-0"
+                            src="https://lottie.host/ce08c3cd-f456-43e1-9dee-7362dc351c82/IzOw2oYgxU.lottie"
+                            loop
+                            autoplay
+                        />
                     </div>
+                </div>
+            </section>
+            <section className="change  flex justify-center ">
+                <div ref={blackBall} className="bg-black w-30 h-30 rounded-full">
+                    
                 </div>
             </section>
 
             {/* ===== SECTION 4: Two Column Deep Dive ===== */}
-            <section ref={section4Ref} className="min-h-screen py-32 px-8">
+            <section ref={section4Ref} className="built min-h-screen py-32 px-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
                         {/* Left side - Title */}
@@ -354,50 +298,41 @@ export default function Main() {
                 </div>
             </section>
 
-            {/* ===== SECTION 5: Stats & Metrics ===== */}
+            {/* ===== SECTION 5: Mascotte AI ===== */}
             <section ref={section5Ref} className="min-h-screen py-32 px-8 flex items-center">
                 <div className="max-w-7xl mx-auto w-full">
                     <div className="mb-32">
                         <h3 className="text-5xl md:text-6xl font-light mb-6 tracking-tight">
-                            Trusted by innovators worldwide
+                            Mascotte AI
                         </h3>
                         <p className="text-xl md:text-2xl text-gray-500 max-w-3xl">
-                            Join thousands of teams building the future with AI-powered development
+                            Personaggi unici generati dall'intelligenza artificiale per dare vita al tuo brand
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-32">
-                        <div ref={el => statsRef.current[0] = el} className="border-t border-white/20 pt-8">
-                            <div className="text-7xl md:text-8xl font-light mb-6 stat-number">10x</div>
-                            <p className="text-xl text-gray-500 leading-relaxed">
-                                Faster time to market compared to traditional development workflows
-                            </p>
-                        </div>
-
-                        <div ref={el => statsRef.current[1] = el} className="border-t border-white/20 pt-8">
-                            <div className="text-7xl md:text-8xl font-light mb-6 stat-number">99.9%</div>
-                            <p className="text-xl text-gray-500 leading-relaxed">
-                                System uptime with enterprise-grade infrastructure and support
-                            </p>
-                        </div>
-
-                        <div ref={el => statsRef.current[2] = el} className="border-t border-white/20 pt-8">
-                            <div className="text-7xl md:text-8xl font-light mb-6 stat-number">50k</div>
-                            <p className="text-xl text-gray-500 leading-relaxed">
-                                Applications successfully deployed to production environments
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Gallery grid placeholder */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {[1, 2, 3, 4, 5, 6].map((item, index) => (
+                    {/* Mascotte Cards Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[
+                            { name: "Luna", desc: "Guida digitale" },
+                            { name: "Spark", desc: "Assistente creativo" },
+                            { name: "Nova", desc: "Esploratore tech" },
+                            { name: "Pixel", desc: "Designer virtuale" },
+                            { name: "Echo", desc: "Comunicatore AI" },
+                            { name: "Flux", desc: "Innovatore dinamico" }
+                        ].map((mascot, index) => (
                             <div
-                                key={item}
+                                key={mascot.name}
                                 ref={el => featureCardsRef.current[index + 3] = el}
-                                className="aspect-square bg-gradient-to-br from-white/5 to-white/[0.02] rounded-2xl border border-white/10 flex items-center justify-center hover:border-white/30 transition-colors duration-300"
+                                className="group aspect-square bg-gradient-to-br from-white/5 to-white/[0.02] rounded-3xl border border-white/20 p-8 flex flex-col items-center justify-center hover:border-white/40 transition-all duration-500 hover:scale-105 backdrop-blur-sm"
                             >
-                                <span className="text-6xl font-light text-gray-800">{item}</span>
+                                {/* Placeholder per mascotte AI */}
+                                <div className="w-32 h-32 mb-6 border border-white/20 rounded-3xl flex items-center justify-center backdrop-blur-sm bg-white/5 group-hover:bg-white/10 transition-all duration-300">
+                                    <svg className="w-16 h-16 text-gray-500 group-hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <h4 className="text-2xl font-light mb-2 tracking-tight">{mascot.name}</h4>
+                                <p className="text-sm text-gray-500 uppercase tracking-[0.2em]">{mascot.desc}</p>
                             </div>
                         ))}
                     </div>
