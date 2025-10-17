@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Cases from "@/components/Cases";
+// import About from "@/components/About"; // Temporaneamente disabilitato
+import Main from "@/components/Main";
 import Footer from "@/components/Footer";
 import {FlickeringGrid} from "@/components/ui/shadcn-io/flickering-grid";
 
@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <div>
       <FlickeringGrid className='fixed inset-0 z-0 opacity-50' />
+      <Navbar />
       <Hero />
-      <About />
-      <Cases />
+      <Main />
       <Footer />
     </div>
   );
