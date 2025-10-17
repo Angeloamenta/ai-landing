@@ -1,5 +1,5 @@
 
-import Navbar from "@/components/Navbar";
+// import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About"; // Temporaneamente disabilitato
 import Main from "@/components/Main";
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div>
       {/* <FlickeringGrid className='fixed inset-0 z-0 opacity-60'  color='rgb(247 128 87)'/> */}
-      <Navbar />
+      {/* <Navbar /> */}
       <Hero />
       {/* <About /> */}
        <Main />

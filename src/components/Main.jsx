@@ -108,11 +108,11 @@ export default function Main() {
        const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".change",
-        start: "top bottom",     // quando la sezione entra nel viewport
-        end: "bottom top",       // fino a quando esce
-        pin: true,               // fissa la sezione durante l’effetto
-        scrub: true,             // sincronizza con lo scroll
-        markers: true,           // (facoltativo, utile per debug)
+        start: "top bottom",     
+        end: "bottom top",       
+        pin: true,               
+        scrub: true,       
+    
       },
     });
 

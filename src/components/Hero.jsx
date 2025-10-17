@@ -28,7 +28,7 @@ export default function Hero() {
 
         toggleActions: "play none none reverse",
         scrub: true,
-        markers: true,
+        // markers: true,
         onUpdate: (self) => {
             const progress = self.progress;
             if (progress > 0.2) {
@@ -50,7 +50,7 @@ export default function Hero() {
         start: "top bottom-=100px",
         toggleActions: "play none none reverse",
         scrub: true,
-        markers: true,
+        // markers: true,
         
       },
     })

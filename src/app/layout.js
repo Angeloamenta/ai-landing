@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       >
         {/* <CustomCursor /> */}
         <SmoothScroll />
-        <Navbar />
+        {/* <Navbar /> */}
         {children}
       </body>
     </html>
