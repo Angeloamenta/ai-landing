@@ -43,7 +43,7 @@ export default function Cases() {
         <div  className="w-full h-full container absolute m-auto " style={{ zIndex: -1 }}> 
                 {/* <SplineHero /> */}
                 <DotLottieReact
-                className="absolute -top-50"
+                className="absolute w-full -top-50"
                     src="https://lottie.host/2046c2d4-6124-48c4-b804-75da79055681/YXnBI3VYVz.lottie"
                     loop
                     autoplay

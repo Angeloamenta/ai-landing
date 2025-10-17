@@ -48,7 +48,7 @@ export default function Hero() {
             </div>
             <div className="container m-auto h-full w-full flex flex-col justify-evenly">
                 <div>
-                    <TextPressure />
+                    <TextPressure text="Landing AI" />
                     <h1 className="hidden text-9xl font-bold"></h1>
                 </div>
                 <div className="flex justify-end">

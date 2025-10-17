@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 const TextPressure = ({
-  text = 'Landing AI',
+  text = 'AI',
   fontFamily = 'Compressa VF',
   fontUrl = 'https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2',
   width = true,
