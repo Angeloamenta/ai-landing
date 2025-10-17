@@ -2,6 +2,7 @@ import Image from "next/image";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Cases from "@/components/Cases";
+import Footer from "@/components/Footer";
 import {FlickeringGrid} from "@/components/ui/shadcn-io/flickering-grid";
 
 
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <About />
       <Cases />
+      <Footer />
     </div>
   );
 }
