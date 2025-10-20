@@ -19,21 +19,141 @@ export default function Main() {
     const section5Ref = useRef(null);
     const iconsRef = useRef([]);
     const featureCardsRef = useRef([]);
-
+    const videoContainerRef = useRef(null);
+    const pixelCanvasRef = useRef(null);
     const blackBall = useRef(null);
 
     useEffect(() => {
-        // Video animation
-        gsap.from(myVideo.current, {
-            scale: 0.5,
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: ".video-container",
-                toggleActions: "restart none none reset",
+        // Pixel art reconstruction effect
+        const createPixelArtEffect = () => {
+            if (!pixelCanvasRef.current || !videoContainerRef.current) return;
+
+            const canvas = pixelCanvasRef.current;
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size to match video container
+            const videoRect = myVideo.current.getBoundingClientRect();
+            canvas.width = videoRect.width;
+            canvas.height = videoRect.height;
+
+            const pixelSize = 20;
+            const cols = Math.ceil(canvas.width / pixelSize);
+            const rows = Math.ceil(canvas.height / pixelSize);
+            
+            // Create pixel grid with dark colors
+            const pixels = [];
+            const darkColors = ['#1a1a1a', '#2d2d2d', '#404040', '#4a4a4a', '#333333'];
+            
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    pixels.push({
+                        x: x * pixelSize,
+                        y: y * pixelSize,
+                        color: darkColors[Math.floor(Math.random() * darkColors.length)],
+                        delay: Math.random() * 0.8
+                    });
+                }
+            }
+
+            // Draw initial pixelated state
+            const drawPixels = (progress) => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                pixels.forEach(pixel => {
+                    const pixelProgress = Math.max(0, Math.min(1, (progress - pixel.delay) / 0.2));
+                    
+                    if (pixelProgress < 1) {
+                        const currentSize = pixelSize * (1 - pixelProgress);
+                        const offset = (pixelSize - currentSize) / 2;
+                        
+                        ctx.fillStyle = pixel.color;
+                        ctx.fillRect(
+                            pixel.x + offset,
+                            pixel.y + offset,
+                            currentSize,
+                            currentSize
+                        );
+                    }
+                });
+            };
+
+            // Initial draw
+            drawPixels(0);
+
+            // ScrollTrigger animation
+            ScrollTrigger.create({
+                trigger: videoContainerRef.current,
                 start: "top center",
-            },
-        });
+                end: "top top",
+                onEnter: () => {
+                    gsap.to({}, {
+                        duration: 1.5,
+                        ease: "power2.inOut",
+                        onUpdate: function() {
+                            drawPixels(this.progress());
+                        },
+                        onComplete: () => {
+                            canvas.style.opacity = '0';
+                            canvas.style.pointerEvents = 'none';
+                        }
+                    });
+
+                    gsap.from(myVideo.current, {
+                        opacity: 0,
+                        scale: 0.95,
+                        duration: 1.5,
+                        ease: "power2.out",
+                    });
+                },
+                onLeave: () => {
+                    canvas.style.opacity = '1';
+                    canvas.style.pointerEvents = 'auto';
+                    drawPixels(0);
+                    
+                    gsap.to(myVideo.current, {
+                        opacity: 0.3,
+                        scale: 0.98,
+                        duration: 0.8,
+                        ease: "power2.inOut",
+                    });
+                },
+                onEnterBack: () => {
+                    canvas.style.opacity = '1';
+                    gsap.to({}, {
+                        duration: 1.5,
+                        ease: "power2.inOut",
+                        onUpdate: function() {
+                            drawPixels(this.progress());
+                        },
+                        onComplete: () => {
+                            canvas.style.opacity = '0';
+                            canvas.style.pointerEvents = 'none';
+                        }
+                    });
+
+                    gsap.to(myVideo.current, {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 1.5,
+                        ease: "power2.out",
+                    });
+                },
+                onLeaveBack: () => {
+                    canvas.style.opacity = '1';
+                    canvas.style.pointerEvents = 'auto';
+                    drawPixels(0);
+                    
+                    gsap.to(myVideo.current, {
+                        opacity: 0.3,
+                        scale: 0.98,
+                        duration: 0.8,
+                        ease: "power2.inOut",
+                    });
+                }
+            });
+        };
+
+        // Video animation
 
         const ctx = gsap.context(() => {
             // Hero text reveal animation
@@ -101,35 +221,33 @@ export default function Main() {
                 }
             });
 
+            // Initialize pixel art effect
+            setTimeout(() => createPixelArtEffect(), 100);
 
-        }, []);
+        });
 
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".change",
+                start: "top bottom",
+                end: "bottom top",
+                pin: true,
+                scrub: true,
+            },
+        });
 
-       const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".change",
-        start: "top bottom",     
-        end: "bottom top",       
-        pin: true,               
-        scrub: true,       
-    
-      },
-    });
-
-    // 1️⃣ Ingrandisce l'elemento
-    tl.to(blackBall.current, {
-      scale: 50,
-      duration: 1,
-      ease: "power2.inOut",
-    })
-    // 2️⃣ Sfuma via mentre la scala termina
-      .to(blackBall.current, {
-        opacity: 0,
-        duration: 0.6,
-        ease: "power1.out",
-      }, "-=0.3"); // inizia 0.3 secondi prima della fine della scala
-
-
+        // 1️⃣ Ingrandisce l'elemento
+        tl.to(blackBall.current, {
+            scale: 50,
+            duration: 1,
+            ease: "power2.inOut",
+        })
+        // 2️⃣ Sfuma via mentre la scala termina
+        .to(blackBall.current, {
+            opacity: 0,
+            duration: 0.6,
+            ease: "power1.out",
+        }, "-=0.3");
 
         return () => ctx.revert();
     }, []);
@@ -206,7 +324,18 @@ export default function Main() {
             {/* ===== SECTION 3: video ===== */}
             <section ref={section3Ref} className="py-32 px-8 flex items-center">
                 <div className="max-w-7xl relative w-full mx-auto">
-                    <div className="video-container flex justify-center">
+                    <div ref={videoContainerRef} className="video-container flex justify-center relative">
+                        {/* Pixel art canvas overlay */}
+                        <canvas
+                            ref={pixelCanvasRef}
+                            className="absolute inset-0 z-10 pointer-events-none rounded-2xl"
+                            style={{
+                                width: '80%',
+                                height: '600px',
+                                margin: '0 auto',
+                            }}
+                        />
+
                         <iframe
                             ref={myVideo}
                             width="80%"
@@ -216,7 +345,7 @@ export default function Main() {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerPolicy="strict-origin-when-cross-origin"
                             allowFullScreen
-                            className="rounded-2xl"
+                            className="rounded-2xl relative z-0"
                         ></iframe>
                     </div>
 
@@ -233,6 +362,7 @@ export default function Main() {
                     </div>
                 </div>
             </section>
+
             <section className="change  flex justify-center ">
                 <div ref={blackBall} className="bg-black w-30 h-30 rounded-full">
                     
