@@ -6,6 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Cases from "./Cases";
+import Element from "./utilities-component/element";
+import Intro from "./Intro";
 
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -254,6 +256,8 @@ export default function Main() {
 
     return (
         <main className="relative overflow-hidden">
+            {/* <Intro /> */}
+            {/* <Element /> */}
             {/* ===== SECTION 1: Hero Statement - Essential Style ===== */}
             <section className="min-h-screen flex items-center justify-center px-8 py-32 relative">
                 <div className="max-w-6xl mx-auto text-center">

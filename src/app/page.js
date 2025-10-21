@@ -4,6 +4,8 @@ import Hero from "@/components/Hero";
 import About from "@/components/About"; // Temporaneamente disabilitato
 import Main from "@/components/Main";
 import Footer from "@/components/Footer";
+import Alternativefooter from "@/components/Alternativefooter";
+
 // import {FlickeringGrid} from "@/components/ui/shadcn-io/flickering-grid";
 
 
@@ -16,7 +18,8 @@ export default function Home() {
       <Hero />
       {/* <About /> */}
        <Main />
-      <Footer />
+      {/* <Footer /> */}
+      <Alternativefooter />
     </div>
   );
 }

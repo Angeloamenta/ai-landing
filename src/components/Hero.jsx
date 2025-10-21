@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 
 import SplineHero from "./utilities-component/SplineHero"
 import TextPressure from "./ui/shadcn-io/text-pressure"
@@ -66,10 +66,18 @@ export default function Hero() {
                 //   markers: true
             },
         });
+
+        const heroTimeline = gsap.timeline()
+
+        heroTimeline.fromTo(titleRef.current, {opacity:0, x:-200}, {opacity:1, duration:2, x:0})
+
+
     }, []);
 
 
     const splineHero = useRef(null)
+    const titleRef = useRef(null)
+    const subtitleRef = useRef(null)
 
 
     return (
@@ -77,7 +85,6 @@ export default function Hero() {
             <FlickeringGrid className='fixed inset-0 z-0 opacity-70'  color={color}/>
             <div ref={splineHero} className="w-full h-full fixed" style={{ zIndex: -1 }}>
                 <DotLottieReact
-                className=""
                     src="https://lottie.host/2046c2d4-6124-48c4-b804-75da79055681/YXnBI3VYVz.lottie"
                     loop
                     autoplay
@@ -85,12 +92,12 @@ export default function Hero() {
                 <SplineHero />
             </div>
             <div className="container m-auto h-full w-full flex flex-col justify-evenly">
-                <div>
+                <div ref={titleRef}>
                     <TextPressure text="Landing AI" />
                     <h1 className="hidden text-9xl font-bold"></h1>
                 </div>
                 <div className="flex justify-end">
-                    <p className="w-md text-2xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quod error deserunt deleniti numquam fugiat aut dolorem sunt consectetur quisquam repellendus veniam</p>
+                    <p ref={subtitleRef} className="w-md text-2xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quod error deserunt deleniti numquam fugiat aut dolorem sunt consectetur quisquam repellendus veniam</p>
                 </div>
             </div>
         </div>
