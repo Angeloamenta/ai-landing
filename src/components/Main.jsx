@@ -6,8 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Cases from "./Cases";
-import Element from "./utilities-component/element";
-import Intro from "./Intro";
+
 
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
