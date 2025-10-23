@@ -9,6 +9,7 @@ import Cases from "./Cases";
 
 
 
+
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function Main() {
@@ -255,6 +256,8 @@ export default function Main() {
 
     return (
         <main className="relative overflow-hidden">
+
+
             {/* <Intro /> */}
             {/* <Element /> */}
             {/* ===== SECTION 1: Hero Statement - Essential Style ===== */}
