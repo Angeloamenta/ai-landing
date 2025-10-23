@@ -5,6 +5,7 @@ import About from "@/components/About"; // Temporaneamente disabilitato
 import Main from "@/components/Main";
 import Footer from "@/components/Footer";
 import Alternativefooter from "@/components/Alternativefooter";
+// import Navbar from "@/components/Navbar";
 
 // import {FlickeringGrid} from "@/components/ui/shadcn-io/flickering-grid";
 

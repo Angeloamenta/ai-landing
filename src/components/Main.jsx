@@ -6,13 +6,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Cases from "./Cases";
-
+import Slider from "./Slider";
+import Pixel from "./utilities-component/Pixel";
 
 
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-export default function Main() {
+export default function Main(props) {
     const myVideo = useRef(null);
     const heroTextRef = useRef(null);
     const section2Ref = useRef(null);
@@ -258,6 +259,7 @@ export default function Main() {
         <main className="relative overflow-hidden">
 
 
+            <Slider/>
             {/* <Intro /> */}
             {/* <Element /> */}
             {/* ===== SECTION 1: Hero Statement - Essential Style ===== */}
@@ -537,7 +539,7 @@ export default function Main() {
                     </p>
                 </div>
 
-                <Cases />
+                {/* <Cases /> */}
 
                 {/* CTA */}
                 <div className="text-center mt-32 px-8">
